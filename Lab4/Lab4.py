@@ -73,7 +73,6 @@ class NotifyDataChanging(DataChangingProtocol):
         self._age = 0
         self._email = ""
     
-    # Методы для валидации изменений
     def add_property_changing_listener(self, listener: PropertyChangingListenerProtocol) -> None:
         self._changing_listeners.append(listener)
     
@@ -81,7 +80,6 @@ class NotifyDataChanging(DataChangingProtocol):
         if listener in self._changing_listeners:
             self._changing_listeners.remove(listener)
     
-    # Методы для отслеживания изменений
     def add_property_changed_listener(self, listener: PropertyChangedListenerProtocol) -> None:
         self._changed_listeners.append(listener)
     
