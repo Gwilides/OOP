@@ -6,7 +6,7 @@ from services import AuthService
 def main() -> None:
     # Инициализация
     user_repository = UserRepository("users.json", User)
-    auth_service = AuthService("session.json", user_repository)
+    auth_service = AuthService(user_repository, "session.json")
 
     print("1. Проверка автоматической авторизации:")
     if auth_service.is_authorized:
@@ -86,7 +86,7 @@ def main() -> None:
         print(f"Авторизован: {auth_service.current_user.name}")
     
     print("Имитация перезапуска программы...")
-    new_auth_service = AuthService("session.json", user_repository)
+    new_auth_service = AuthService(user_repository, "session.json")
     
     if new_auth_service.is_authorized:
         print(f"Автоматическая авторизация работает! Пользователь: {new_auth_service.current_user.name}")
