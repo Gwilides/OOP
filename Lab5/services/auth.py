@@ -7,7 +7,7 @@ from protocols.auth import AuthServiceProtocol
 from protocols.user import UserRepositoryProtocol
 
 class AuthService(AuthServiceProtocol):
-    def __init__(self, session_file: str = "session.json", repository: UserRepositoryProtocol = None):
+    def __init__(self, repository: UserRepositoryProtocol, session_file: str = "session.json"):
         self.session_file = Path(session_file)
         self._current_user: User | None = None
         self.repository = repository
