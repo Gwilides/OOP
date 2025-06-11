@@ -30,7 +30,6 @@ class DataRepository[T]:
             )
 
     def get_all(self) -> Sequence[T]:
-        print(len(self._datas))
         return sorted(self._datas, key=lambda data: data.name)
 
     def get_by_id(self, id: int) -> T | None:
