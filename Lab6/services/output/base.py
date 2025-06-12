@@ -1,4 +1,3 @@
-from config import settings
 from .abstract import AbstractOutputService
 
 
@@ -14,7 +13,7 @@ class ConsoleFileWriter(AbstractOutputService):
 
         try:
             self._file = open(self._output_file, 'w',
-                              encoding=settings.ENCODING)
+                              encoding='utf-8')
         except OSError as e:
             raise RuntimeError(f"Failed to open {output_file}: {e}") from e
 
