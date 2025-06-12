@@ -11,4 +11,4 @@ class PrintCharCommand(Command):
         self._output_service.char(self._char)
 
     def undo(self) -> None:
-        self._output_service.undo()
+        self._output_service.remove_last_char()

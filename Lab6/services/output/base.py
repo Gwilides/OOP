@@ -29,7 +29,7 @@ class ConsoleFileWriter(AbstractOutputService):
             self._file.write(f"{message}\n")
             self._file.flush()
 
-    def undo(self) -> None:
+    def remove_last_char(self) -> None:
         if not self._text:
             return
         self._text = self._text[:-1]
