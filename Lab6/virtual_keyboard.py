@@ -27,7 +27,6 @@ class Keyboard:
 
     def undo(self) -> None:
         if self._undo_stack:
-            self._output_service.message("undo", need_write=False)
             command = self._undo_stack.pop()
             command.undo()
             self._redo_stack.append(command)
