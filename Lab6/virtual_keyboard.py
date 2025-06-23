@@ -1,16 +1,15 @@
 from collections import deque
 
 from commands.base import Command
-from commands.print import PrintCharCommand
-from commands.volume import VolumeUpCommand, VolumeDownCommand
-from commands.media import MediaPlayerCommand
+from commands.factory import CommandFactory, DefaultCommandFactory
 from services.output.base import ConsoleFileWriter
 
 
 class Keyboard:
-    def __init__(self):
-        self._output_service = ConsoleFileWriter()
+    def __init__(self, command_factory: CommandFactory = None):
+        self.output_service = ConsoleFileWriter()
         self._key_bindings: dict[str, Command] = {}
+        self._command_factory = command_factory or DefaultCommandFactory()
 
         self._undo_stack: deque[Command] = deque()
         self._redo_stack: deque[Command] = deque()
@@ -33,7 +32,7 @@ class Keyboard:
 
     def redo(self) -> None:
         if self._redo_stack:
-            self._output_service.message("redo", need_write=False)
+            self.output_service.message("redo", need_write=False)
             command = self._redo_stack.pop()
             command.execute()
             self._undo_stack.append(command)
@@ -46,13 +45,10 @@ class Keyboard:
 
     def restore_bindings(self, bindings: dict[str, str]) -> None:
         for key, command_type in bindings.items():
-            if command_type == "PrintCharCommand":
-                char = key[0] if key else 'a'
-                self.key_bind(key, PrintCharCommand(
-                    char, self._output_service))
-            elif command_type == "VolumeUpCommand":
-                self.key_bind(key, VolumeUpCommand(self._output_service))
-            elif command_type == "VolumeDownCommand":
-                self.key_bind(key, VolumeDownCommand(self._output_service))
-            elif command_type == "MediaPlayerCommand":
-                self.key_bind(key, MediaPlayerCommand(self._output_service))
+            try:
+                command = self._command_factory.create_command(
+                    command_type, key, self.output_service
+                )
+                self.key_bind(key, command)
+            except ValueError as e:
+                print(f"Не удалось восстановить привязку для клавиши {key}: {e}")

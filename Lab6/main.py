@@ -9,12 +9,12 @@ def main() -> None:
     keyboard = Keyboard()
     state_saver = KeyboardStateSaver()
 
-    keyboard.key_bind("ctrl++", VolumeUpCommand(keyboard._output_service))
-    keyboard.key_bind("ctrl+-", VolumeDownCommand(keyboard._output_service))
-    keyboard.key_bind("ctrl+p", MediaPlayerCommand(keyboard._output_service))
+    keyboard.key_bind("ctrl++", VolumeUpCommand(keyboard.output_service))
+    keyboard.key_bind("ctrl+-", VolumeDownCommand(keyboard.output_service))
+    keyboard.key_bind("ctrl+p", MediaPlayerCommand(keyboard.output_service))
     for char in "abcdefghijklmnopqrstuvwxyz ":
         keyboard.key_bind(char, PrintCharCommand(
-            char, keyboard._output_service))
+            char, keyboard.output_service))
 
     saved_bindings = state_saver.load_state()
     if saved_bindings:
